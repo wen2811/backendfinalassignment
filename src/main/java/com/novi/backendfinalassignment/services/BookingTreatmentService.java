@@ -1,11 +1,17 @@
 package com.novi.backendfinalassignment.services;
 
+import com.novi.backendfinalassignment.dtos.BookingDto;
 import com.novi.backendfinalassignment.dtos.BookingTreatmentDto;
 import com.novi.backendfinalassignment.dtos.BookingTreatmentDto;
+import com.novi.backendfinalassignment.exceptions.RecordNotFoundException;
 import com.novi.backendfinalassignment.models.Booking;
 import com.novi.backendfinalassignment.models.BookingTreatment;
 import com.novi.backendfinalassignment.repositories.BookingTreatmentRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookingTreatmentService {
@@ -15,6 +21,26 @@ public class BookingTreatmentService {
         this.bookingTreatmentRepository = bookingTreatmentRepository;
     }
     //Read
+    public List<BookingTreatmentDto>getAllBookingTreatment(){
+        Iterable<BookingTreatment> bookingTreatments = bookingTreatmentRepository.findAll();
+        List<BookingTreatmentDto> bookingTreatmentDtos = new ArrayList<>();
+
+        for (BookingTreatment bt: bookingTreatments){
+            bookingTreatmentDtos.add(transferBookingTreatmentToDto(bt));
+        }
+        return bookingTreatmentDtos;
+    }
+
+    public BookingTreatmentDto getBookingTreatment(Long id) {
+        Optional<BookingTreatment> bookingTreatmentOptional = bookingTreatmentRepository.findById(id);
+
+        if (bookingTreatmentOptional.isEmpty()){
+            throw new RecordNotFoundException("There is no bookingtreatment found with id: " + id);
+        }
+        BookingTreatment bookingTreatment = bookingTreatmentOptional.get();
+        return transferBookingTreatmentToDto(bookingTreatment);
+    }
+
     //Create
      public BookingTreatmentDto addBookingTreatment(BookingTreatmentDto bookingTreatmentDto) {
         BookingTreatment bookingTreatment = transferDtoToBookingTreatment(bookingTreatmentDto);
@@ -23,7 +49,25 @@ public class BookingTreatmentService {
         return transferBookingTreatmentToDto(bookingTreatment);
     }
     //Update
+    public BookingTreatmentDto updateBookingTreatment(Long id, BookingTreatmentDto bookingTreatmentDto) throws RecordNotFoundException {
+        Optional<BookingTreatment> bookingTreatmentOptional = bookingTreatmentRepository.findById(id);
+        if(bookingTreatmentOptional.isEmpty()){
+            throw new RecordNotFoundException("Bookingtreatment is not found with this id " + id);
+        }
+        BookingTreatment updateBookingTreatment = transferDtoToBookingTreatment((bookingTreatmentDto));
+        updateBookingTreatment.setId(id);
+        bookingTreatmentRepository.save(updateBookingTreatment);
+
+        return transferBookingTreatmentToDto(updateBookingTreatment);
+    }
     //Delete
+    public void deleteBookingTreatment(Long id) throws RecordNotFoundException {
+        Optional<BookingTreatment> optionalBookingTreatment = bookingTreatmentRepository.findById(id);
+        if(optionalBookingTreatment.isEmpty()){
+            throw new RecordNotFoundException("There is no booking found with id " + id);
+        }
+        bookingTreatmentRepository.deleteById(id);
+    }
 
     public BookingTreatmentDto transferBookingTreatmentToDto(BookingTreatment bookingTreatment) {
         BookingTreatmentDto bookingTreatmentDto = new BookingTreatmentDto();

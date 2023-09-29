@@ -107,36 +107,6 @@ public class BookingService {
         return transferBookingToDto(existingBooking);
     }
 
-    // Update 3
-
-    /*public BookingDto updateBooking(Long id, BookingDto bookingDto) throws RecordNotFoundException {
-        Optional<Booking> bookingOptional = bookingRepository.findById(id);
-        if (bookingOptional.isEmpty()) {
-            throw new RecordNotFoundException("Booking not found with this id: " + id);
-        }
-        Booking existingBooking = bookingOptional.get();
-
-        existingBooking.setDate(bookingDto.getDate());
-        existingBooking.setCustomer(bookingDto.getCustomer());
-        existingBooking.setBookingStatus(bookingDto.getBookingStatus());
-        existingBooking.setInvoice(bookingDto.getInvoice());
-        existingBooking.setUser(bookingDto.getEmployee());
-        existingBooking.setTotalAmount(bookingDto.getTotalAmount());
-
-        List<BookingTreatment> newBookingTreatments = new ArrayList<>();
-        for (BookingTreatment bookingTreatment : bookingDto.getBookingTreatments()) {
-            BookingTreatment existingTreatment = bookingTreatmentRepository.findById(bookingTreatment.getId())
-                    .orElseThrow(() -> new RecordNotFoundException("Treatment not found with id: " + bookingTreatment.getId()));
-            newBookingTreatments.add(existingTreatment);
-        }
-        existingBooking.setBookingTreatments(newBookingTreatments);
-
-        bookingRepository.save(existingBooking);
-
-        return transferBookingToDto(existingBooking);
-    }
-*/
-
 
 
     //Delete

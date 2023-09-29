@@ -1,10 +1,13 @@
 package com.novi.backendfinalassignment.dtos;
 
+import com.novi.backendfinalassignment.models.BookingTreatment;
 import com.novi.backendfinalassignment.models.Calendar;
 import com.novi.backendfinalassignment.models.TreatmentType;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +22,7 @@ public class TreatmentDto {
  public double duration;
 public double price;
 public Calendar calendar;
+ public List<BookingTreatment> bookingTreatments;
 
 
  public double getPrice() {

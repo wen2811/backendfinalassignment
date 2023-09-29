@@ -1,6 +1,7 @@
 package com.novi.backendfinalassignment.controllers;
 
 import com.novi.backendfinalassignment.dtos.BookingDto;
+import com.novi.backendfinalassignment.dtos.BookingTreatmentDto;
 import com.novi.backendfinalassignment.dtos.CalendarDto;
 import com.novi.backendfinalassignment.dtos.TreatmentDto;
 import com.novi.backendfinalassignment.exceptions.RecordNotFoundException;
@@ -85,6 +86,32 @@ public class TreatmentController {
         return ResponseEntity.ok(treatmentDto);
     }
 
+    @PostMapping("/{treatmentId}/bookingtreatments")
+    public ResponseEntity<BookingTreatmentDto> addBookingTreatmentToTreatment(@PathVariable Long treatmentId, @RequestBody BookingTreatmentDto bookingTreatmentDto) {
+        BookingTreatmentDto addedBookingTreatment = treatmentService.addBookingTreatmentToTreatment(treatmentId, bookingTreatmentDto);
+        return new ResponseEntity<>(addedBookingTreatment, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}/updateBookingTreatment")
+    public ResponseEntity<BookingTreatmentDto> updateBookingTreatment(@PathVariable Long id, @RequestBody BookingTreatmentDto bookingTreatmentDto) throws RecordNotFoundException {
+        BookingTreatmentDto updatedBookingTreatment = treatmentService.updateBookingTreatment(id, bookingTreatmentDto);
+        return ResponseEntity.ok(updatedBookingTreatment);
+    }
+
+    @GetMapping("/bookingtreatment/{id}")
+    public ResponseEntity<BookingTreatmentDto> getBookingTreatmentById(@PathVariable Long id) throws RecordNotFoundException {
+        BookingTreatmentDto bookingTreatment = treatmentService.getBookingTreatmentById(id);
+        return ResponseEntity.ok(bookingTreatment);
+    }
+
+}
+
+
+
+
+
+
+
 
 
     /*@GetMapping("/{id}/amount")
@@ -96,4 +123,4 @@ public class TreatmentController {
     }
 */
 
-}
+

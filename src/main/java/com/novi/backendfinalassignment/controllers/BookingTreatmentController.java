@@ -1,10 +1,12 @@
 package com.novi.backendfinalassignment.controllers;
 
-import com.novi.backendfinalassignment.dtos.BookingDto;
 import com.novi.backendfinalassignment.dtos.BookingTreatmentDto;
+import com.novi.backendfinalassignment.dtos.TreatmentDto;
 import com.novi.backendfinalassignment.exceptions.RecordNotFoundException;
 import com.novi.backendfinalassignment.services.BookingTreatmentService;
+import com.novi.backendfinalassignment.services.TreatmentService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -18,11 +20,12 @@ import java.util.List;
 @RequestMapping("/bookingtreatments")
 public class BookingTreatmentController {
     private final BookingTreatmentService bookingTreatmentService;
+    private final TreatmentService treatmentService;
 
 
-    public BookingTreatmentController(BookingTreatmentService bookingTreatmentService) {
+    public BookingTreatmentController(BookingTreatmentService bookingTreatmentService, TreatmentService treatmentService) {
         this.bookingTreatmentService = bookingTreatmentService;
-
+        this.treatmentService = treatmentService;
     }
     
     //Read
@@ -35,6 +38,8 @@ public class BookingTreatmentController {
     public ResponseEntity<BookingTreatmentDto> getBookingTreatment(@PathVariable Long id) {
         return ResponseEntity.ok().body(bookingTreatmentService.getBookingTreatment(id));
     }
+
+
 
     //Create
     @PostMapping
@@ -65,4 +70,5 @@ public class BookingTreatmentController {
         bookingTreatmentService.deleteBookingTreatment(id);
         return ResponseEntity.noContent().build();
     }
+
 }

@@ -1,12 +1,11 @@
 package com.novi.backendfinalassignment.services;
 
-import com.novi.backendfinalassignment.dtos.BookingDto;
-import com.novi.backendfinalassignment.dtos.BookingTreatmentDto;
 import com.novi.backendfinalassignment.dtos.BookingTreatmentDto;
 import com.novi.backendfinalassignment.exceptions.RecordNotFoundException;
-import com.novi.backendfinalassignment.models.Booking;
 import com.novi.backendfinalassignment.models.BookingTreatment;
+import com.novi.backendfinalassignment.models.Treatment;
 import com.novi.backendfinalassignment.repositories.BookingTreatmentRepository;
+import com.novi.backendfinalassignment.repositories.TreatmentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,9 +15,11 @@ import java.util.Optional;
 @Service
 public class BookingTreatmentService {
     private final BookingTreatmentRepository bookingTreatmentRepository;
+    private final TreatmentRepository treatmentRepository;
 
-    public BookingTreatmentService(BookingTreatmentRepository bookingTreatmentRepository) {
+    public BookingTreatmentService(BookingTreatmentRepository bookingTreatmentRepository, TreatmentRepository treatmentRepository) {
         this.bookingTreatmentRepository = bookingTreatmentRepository;
+        this.treatmentRepository = treatmentRepository;
     }
     //Read
     public List<BookingTreatmentDto>getAllBookingTreatment(){
@@ -41,6 +42,7 @@ public class BookingTreatmentService {
         return transferBookingTreatmentToDto(bookingTreatment);
     }
 
+
     //Create
      public BookingTreatmentDto addBookingTreatment(BookingTreatmentDto bookingTreatmentDto) {
         BookingTreatment bookingTreatment = transferDtoToBookingTreatment(bookingTreatmentDto);
@@ -60,6 +62,20 @@ public class BookingTreatmentService {
 
         return transferBookingTreatmentToDto(updateBookingTreatment);
     }
+
+    /*public BookingTreatmentDto updateBookingTreatment(Long id, BookingTreatmentDto bookingTreatmentDto) {
+        BookingTreatment existingBookingTreatment = bookingTreatmentRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("There's no booking treatment found with this id: " + id));
+
+        // Update the fields of the existing booking treatment
+        existingBookingTreatment.setQuantity(bookingTreatmentDto.getQuantity());
+        // You may need to handle updating the treatment and booking references here as well.
+
+        bookingTreatmentRepository.save(existingBookingTreatment);
+
+        return transferBookingTreatmentToDto(existingBookingTreatment);
+    }*/
+
     //Delete
     public void deleteBookingTreatment(Long id) throws RecordNotFoundException {
         Optional<BookingTreatment> optionalBookingTreatment = bookingTreatmentRepository.findById(id);
@@ -68,6 +84,7 @@ public class BookingTreatmentService {
         }
         bookingTreatmentRepository.deleteById(id);
     }
+
 
     public BookingTreatmentDto transferBookingTreatmentToDto(BookingTreatment bookingTreatment) {
         BookingTreatmentDto bookingTreatmentDto = new BookingTreatmentDto();

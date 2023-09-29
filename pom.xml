@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.novi</groupId>
     <artifactId>backendfinalassignment</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>backendfinalassignment</name>
     <description>backendfinalassignment</description>
     <properties>

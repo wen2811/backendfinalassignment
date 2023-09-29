@@ -2,6 +2,8 @@ package com.novi.backendfinalassignment.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalDate;
@@ -9,7 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
+@Setter
+@Getter
 @Entity
 @Table(name = "users")
 public class User {
@@ -24,6 +27,7 @@ public class User {
     @NaturalId(mutable = true)
     private String email;
     private String password;
+    @Enumerated
     private UserRole userRole;
     @Column(nullable = false)
     private boolean enabled = true;
@@ -33,6 +37,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Booking> bookingList;
+
 
     @OneToMany(
             targetEntity = Authority.class,

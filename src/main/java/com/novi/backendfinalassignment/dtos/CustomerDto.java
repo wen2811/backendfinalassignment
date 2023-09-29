@@ -1,6 +1,7 @@
 package com.novi.backendfinalassignment.dtos;
 
 import com.novi.backendfinalassignment.models.Booking;
+import com.novi.backendfinalassignment.models.File;
 import com.novi.backendfinalassignment.models.Invoice;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,4 +18,5 @@ public class CustomerDto {
     public String email;
     public List<Booking> bookingList;
     public List<Invoice> invoice;
+    public List<File> fileList;
 }

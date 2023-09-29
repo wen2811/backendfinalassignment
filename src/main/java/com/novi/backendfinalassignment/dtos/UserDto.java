@@ -1,10 +1,16 @@
 package com.novi.backendfinalassignment.dtos;
 
 import com.novi.backendfinalassignment.models.Authority;
+import com.novi.backendfinalassignment.models.Booking;
+import com.novi.backendfinalassignment.models.File;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
-
+@Getter
+@Setter
 public class UserDto {
 
 
@@ -16,12 +22,11 @@ public class UserDto {
     public Boolean enabled;
     public String apikey;
     public String email;
+    public List<Booking> bookingList;
     public Set<Authority> authorities;
-//    public List<Treatment> order;
 
-    //public Long getId() {return id;}
 
-   // public void setId(Long id) {this.id = id;}
+
 
     public String getUsername() {return username;}
 

@@ -27,6 +27,8 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private List<Invoice> invoice;
+    @OneToMany(mappedBy = "customer")
+    private List<File> fileList;
 
     public List<Invoice> getInvoice() {
         return invoice;

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 
 
 @Getter
@@ -30,27 +31,24 @@ public class Treatment {
     private String description;
     private double duration;
     private double price;
-    private int quantity;
-    //private double sum;
 
 
     @OneToOne //(mappedBy = "treatment")
     private Calendar calendar;
 
-    @ManyToOne
+    @OneToMany
     //@JoinColumn(name = "bookingId")
     //@JoinColumn(name = "treatment_id")
-    private Booking booking;
+    private List<BookingTreatment> bookingTreatments;
 
 
-    public Treatment(String name, TreatmentType type, String description, double duration, double price, int quantity) {
+    public Treatment(String name, TreatmentType type, String description, double duration, double price) {
         this.name = name;
         this.type = type;
         this.description = description;
         this.duration = duration;
         this.price = price;
-        this.quantity = quantity;
-        //this.sum = sum;
+
 
     }
 

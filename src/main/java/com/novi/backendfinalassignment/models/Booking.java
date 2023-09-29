@@ -30,7 +30,7 @@ public class Booking {
     private Invoice invoice;
 
     @OneToMany(mappedBy = "booking")
-    private List<Treatment> treatment;
+    private List<BookingTreatment> bookingTreatments;
 
 
     //JsonIgnore
@@ -50,13 +50,13 @@ public class Booking {
 
 
 
-    public double calculateTotalAmount() {
+   /* public double calculateTotalAmount() {
         double totalAmount = 0.0;
         for (Treatment treatmentItem : treatment) {
             totalAmount += treatmentItem.getPrice() * treatmentItem.getQuantity();
         }
         return totalAmount;
-    }
+    }*/
 
     public Customer getCustomer() {
         return customer;
@@ -64,5 +64,13 @@ public class Booking {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public List<BookingTreatment> getBookingTreatments() {
+        return bookingTreatments;
+    }
+
+    public void setBookingTreatments(List<BookingTreatment> bookingTreatments) {
+        this.bookingTreatments = bookingTreatments;
     }
 }

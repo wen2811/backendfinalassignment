@@ -18,9 +18,8 @@ public class TreatmentDto {
  public String description;
  public double duration;
 public double price;
-public int quantity;
 public Calendar calendar;
-// public double sum;
+
 
  public double getPrice() {
   return price;

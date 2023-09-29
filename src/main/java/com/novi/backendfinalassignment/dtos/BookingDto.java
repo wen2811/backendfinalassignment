@@ -16,9 +16,14 @@ public class BookingDto {
     public User employee;
     public BookingStatus bookingStatus;
 
-    public List<Treatment> treatment;
+    public List<BookingTreatment> bookingTreatments;
     public Customer customer;
     public Invoice invoice;
+
+
+    public Long getCustomerId() {
+        return id;
+        }
 
 
 }

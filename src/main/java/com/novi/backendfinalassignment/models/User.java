@@ -32,7 +32,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private List<Booking> booking;
+    private List<Booking> bookingList;
 
     @OneToMany(
             targetEntity = Authority.class,

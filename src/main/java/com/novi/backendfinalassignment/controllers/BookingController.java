@@ -57,8 +57,8 @@ public class BookingController {
     }*/
 
     @PostMapping("/")
-    public ResponseEntity<Object> createBooking(@RequestParam Long customerId, @RequestParam List<Long> treatmentId) {
-        Booking booking = bookingService.createBooking(customerId, treatmentId);
+    public ResponseEntity<Object> createBooking(@RequestParam Long customerId, @RequestParam List<Long> bookingTreatmentIds) {
+        Booking booking = bookingService.createBooking(customerId, bookingTreatmentIds);
         if (booking == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -66,13 +66,19 @@ public class BookingController {
     }
 
 
-    //Update
+    //Update 1 algemeen
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateBooking(@PathVariable Long id, @RequestBody BookingDto bookingDto) throws RecordNotFoundException {
         BookingDto updateBooking = bookingService.updateBooking(id, bookingDto);
         return ResponseEntity.ok().body(updateBooking);
     }
 
+    // Update 2
+    @PutMapping("/updateTreatments/{id}")
+    public ResponseEntity<BookingDto> updateBookingTreatments(@PathVariable Long id, @RequestBody List<Long> treatmentIds) throws RecordNotFoundException {
+        BookingDto updatedBookingDto = bookingService.updateBookingTreatments(id,treatmentIds );
+        return new ResponseEntity<>(updatedBookingDto, HttpStatus.OK);
+    }
 
     //Delete
     @DeleteMapping("/{id}")
@@ -81,13 +87,13 @@ public class BookingController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}/totalAmount")
+    /*@GetMapping("/{id}/totalAmount")
     public ResponseEntity<BookingDto> getTotalAmount(@PathVariable Long id) throws RecordNotFoundException {
         BookingDto bookingDto = new BookingDto();
         bookingDto.id = id;
         bookingDto.totalAmount = bookingService.getTotalAmount(id);
         return new ResponseEntity<>(bookingDto, HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping("/{customerId}/bookings")
     public ResponseEntity<List<BookingDto>> getBookingsForCustomer(@PathVariable Long customerId) throws RecordNotFoundException {

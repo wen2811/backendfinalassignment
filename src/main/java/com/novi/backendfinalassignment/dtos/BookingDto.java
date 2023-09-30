@@ -16,6 +16,7 @@ public class BookingDto {
     public User employee;
     public BookingStatus bookingStatus;
 
+
     public List<BookingTreatment> bookingTreatments;
     public Customer customer;
     public Invoice invoice;

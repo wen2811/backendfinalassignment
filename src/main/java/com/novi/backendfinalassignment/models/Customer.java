@@ -2,6 +2,7 @@ package com.novi.backendfinalassignment.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.novi.backendfinalassignment.utils.UserCredentials;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "customers")
-public class Customer {
+public abstract class Customer implements UserCredentials {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,5 +39,15 @@ public class Customer {
 
     public void setInvoice(List<Invoice> invoice) {
         this.invoice = invoice;
+    }
+
+    @Override
+    public void setPassword(String password) {
+
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
     }
 }

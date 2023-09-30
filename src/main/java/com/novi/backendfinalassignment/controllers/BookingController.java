@@ -1,19 +1,14 @@
 package com.novi.backendfinalassignment.controllers;
 
 import com.novi.backendfinalassignment.dtos.BookingDto;
-import com.novi.backendfinalassignment.dtos.InvoiceDto;
+import com.novi.backendfinalassignment.dtos.CustomerDto;
 import com.novi.backendfinalassignment.exceptions.RecordNotFoundException;
 import com.novi.backendfinalassignment.models.Booking;
 import com.novi.backendfinalassignment.services.BookingService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -40,8 +35,8 @@ public class BookingController {
 
 
     @PostMapping("/")
-    public ResponseEntity<Object> createBooking(@RequestParam Long customerId, @RequestParam List<Long> bookingTreatmentIds) {
-        Booking booking = bookingService.createBooking(customerId, bookingTreatmentIds);
+    public ResponseEntity<Object> createBooking(@RequestParam Long customerId, @RequestParam List<Long> bookingTreatmentIds, @RequestBody CustomerDto customerDto) {
+        Booking booking = bookingService.createBooking(customerId, bookingTreatmentIds, customerDto);
         if (booking == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -82,6 +77,13 @@ public class BookingController {
     public ResponseEntity<List<BookingDto>> getBookingsForCustomer(@PathVariable Long customerId) throws RecordNotFoundException {
         List<BookingDto> bookingDtos = bookingService.getBookingsForCustomer(customerId);
         return ResponseEntity.ok().body(bookingDtos);
+    }
+
+
+    @PostMapping("/createWithoutRegistration")
+    public ResponseEntity<BookingDto> createBookingWithoutRegistration(@RequestParam Long customerId, @RequestParam List<Long> bookingTreatmentIds, @RequestBody(required = false) CustomerDto customerDto) {
+        BookingDto createdBooking = bookingService.createBookingWithoutRegistration(customerId, bookingTreatmentIds, customerDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdBooking);
     }
 
 }

@@ -106,7 +106,17 @@ public class CustomerService {
     }
 
     public Customer transferDtoToCustomer(CustomerDto customerDto) {
-        Customer customer = new Customer();
+        Customer customer = new Customer() {
+            @Override
+            public boolean isPasswordValid(String password) {
+                return false;
+            }
+
+            @Override
+            public void changePassword(String newPassword) {
+
+            }
+        };
 
         customer.setId(customerDto.id);
         customer.setFirstName(customerDto.firstName);

@@ -25,7 +25,7 @@ public class CustomerController {
     }
 
     //Read
-    @GetMapping
+    @GetMapping("/customers")
     public ResponseEntity<List<CustomerDto>> getAllCustomer() {
         return ResponseEntity.ok().body(customerService.getAllCustomer());
     }
@@ -37,7 +37,7 @@ public class CustomerController {
     }
     
     //Create
-    @PostMapping
+    @PostMapping("/customers")
     public ResponseEntity<Object> addCustomer(@Valid @RequestBody CustomerDto customerDto, BindingResult br) {
         if(br.hasFieldErrors()) {
             StringBuilder sb = new StringBuilder();
@@ -63,13 +63,13 @@ public class CustomerController {
 
 
     //Delete
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/customers/{id}")
     public ResponseEntity<Object> deleteCustomer(@PathVariable Long id) throws RecordNotFoundException  {
         customerService.deleteCustomer(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{customerId}/invoices")
+    @GetMapping("/customers/{customerId}/invoices")
     public ResponseEntity<CustomerDto> getCustomerWithInvoices(@PathVariable Long customerId) throws RecordNotFoundException {
         CustomerDto customerDto = customerService.getCustomerWithInvoices(customerId);
         return ResponseEntity.ok().body(customerDto);

@@ -13,6 +13,8 @@ public class BookingTreatment {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
     private int quantity;
+    private String customerName;
+    private String customerEmail;
 
 
     @ManyToOne

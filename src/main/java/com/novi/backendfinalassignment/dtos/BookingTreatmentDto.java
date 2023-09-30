@@ -10,6 +10,8 @@ import lombok.Setter;
 public class BookingTreatmentDto {
     public Long id;
     public int quantity;
+    public String customerName;
+    public String customerEmail;
     public Booking booking;
     public Treatment treatment;
 }

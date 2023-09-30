@@ -28,9 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         UserDto userDto = userService.getUser(username);
-
         String password = userDto.getPassword();
-
         Set<Authority> authorities = userDto.getAuthorities();
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (Authority authority: authorities) {

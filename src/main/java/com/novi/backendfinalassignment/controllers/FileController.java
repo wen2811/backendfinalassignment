@@ -25,7 +25,15 @@ public class FileController {
 
     @PostMapping("/upload")
     public ResponseEntity<FileDto> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("customerId") Long customerId) throws IOException {
-        Customer customer = new Customer();
+        Customer customer = new Customer() {
+            @Override
+            public boolean isPasswordValid(String password) {
+                return false;
+            }
+            @Override
+            public void changePassword(String newPassword) {
+            }
+        };
         customer.setId(customerId);
 
         FileDto uploadedFile = fileService.uploadFile(file, customer);
@@ -64,8 +72,6 @@ public class FileController {
         fileService.deleteFile(fileId, userId);
         return ResponseEntity.noContent().build();
     }
-
-
 
 
 }

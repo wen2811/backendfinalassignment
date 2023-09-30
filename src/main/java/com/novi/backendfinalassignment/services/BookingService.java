@@ -1,6 +1,8 @@
 package com.novi.backendfinalassignment.services;
 
 import com.novi.backendfinalassignment.dtos.BookingDto;
+import com.novi.backendfinalassignment.dtos.BookingTreatmentDto;
+import com.novi.backendfinalassignment.dtos.CustomerDto;
 import com.novi.backendfinalassignment.exceptions.RecordNotFoundException;
 import com.novi.backendfinalassignment.models.Booking;
 import com.novi.backendfinalassignment.models.BookingTreatment;
@@ -8,7 +10,9 @@ import com.novi.backendfinalassignment.models.Customer;
 import com.novi.backendfinalassignment.repositories.BookingRepository;
 import com.novi.backendfinalassignment.repositories.BookingTreatmentRepository;
 import com.novi.backendfinalassignment.repositories.CustomerRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +56,25 @@ public class BookingService {
     }
 
     //Create
-    public Booking createBooking(Long customerId, List<Long> bookingTreatmentIds) {
+    public Booking createBooking(Long customerId, List<Long> bookingTreatmentIds, CustomerDto customerDto) {
         Customer existingCustomer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RecordNotFoundException("Customer doesn't exist."));
+                .orElseGet(() -> {
+                    Customer newCustomer = new Customer() {
+                        @Override
+                        public boolean isPasswordValid(String password) {
+                            return false;
+                        }
+                        @Override
+                        public void changePassword(String newPassword) {
+                        }
+                    };
+                    newCustomer.setEmail(customerDto.getEmail());
+                    newCustomer.setPassword(customerDto.getPassword());
+
+                    customerRepository.save(newCustomer);
+
+                    return newCustomer;
+                });
 
         Booking booking = new Booking();
         booking.setCustomer(existingCustomer);
@@ -65,11 +85,11 @@ public class BookingService {
                     .orElseThrow(() -> new RecordNotFoundException("BookingTreatment doesn't exist."));
             bookingTreatments.add(bookingTreatment);
         }
-
         booking.setBookingTreatments(bookingTreatments);
         bookingRepository.save(booking);
         return booking;
     }
+
 
 
 
@@ -144,6 +164,29 @@ public class BookingService {
             bookingDtos.add(bookingDto);
         }
         return bookingDtos;
+    }
+
+    public BookingDto createBookingWithoutRegistration(Long customerId, List<Long> bookingTreatmentIds, CustomerDto customerDto) {
+        Booking booking = new Booking();
+
+        if (customerDto != null) {
+            Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+            if (optionalCustomer.isEmpty()) {
+                throw new RecordNotFoundException("Customer doesn't exist.");
+            }
+            Customer existingCustomer = optionalCustomer.get();
+            booking.setCustomer(existingCustomer);
+        }
+        List<BookingTreatment> bookingTreatments = new ArrayList<>();
+        for (Long bookingTreatmentId : bookingTreatmentIds) {
+            BookingTreatment bookingTreatment = bookingTreatmentRepository.findById(bookingTreatmentId)
+                    .orElseThrow(() -> new RecordNotFoundException("BookingTreatment doesn't exist."));
+            bookingTreatments.add(bookingTreatment);
+        }
+        booking.setBookingTreatments(bookingTreatments);
+        bookingRepository.save(booking);
+
+        return transferBookingToDto(booking);
     }
 
 

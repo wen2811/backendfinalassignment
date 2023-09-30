@@ -93,6 +93,8 @@ public class BookingTreatmentService {
         bookingTreatmentDto.quantity = bookingTreatment.getQuantity();
         bookingTreatmentDto.treatment = bookingTreatment.getTreatment();
         bookingTreatmentDto.booking = bookingTreatment.getBooking();
+        bookingTreatmentDto.customerName = bookingTreatment.getCustomerName();
+        bookingTreatmentDto.customerEmail = bookingTreatment.getCustomerEmail();
         return bookingTreatmentDto;
     }
     public BookingTreatment transferDtoToBookingTreatment(BookingTreatmentDto bookingTreatmentDto) {
@@ -102,6 +104,8 @@ public class BookingTreatmentService {
         bookingTreatmentDto.setQuantity(bookingTreatmentDto.quantity);
         bookingTreatmentDto.setTreatment(bookingTreatmentDto.treatment);
         bookingTreatmentDto.setBooking(bookingTreatmentDto.booking);
+        bookingTreatmentDto.setCustomerName(bookingTreatmentDto.customerName);
+        bookingTreatmentDto.setCustomerEmail(bookingTreatmentDto.customerEmail);
         return bookingTreatment;
     }
 }

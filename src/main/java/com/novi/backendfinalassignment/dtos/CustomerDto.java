@@ -19,4 +19,15 @@ public class CustomerDto {
     public List<Booking> bookingList;
     public List<Invoice> invoice;
     public List<File> fileList;
+    public String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
+
+

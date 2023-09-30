@@ -1,10 +1,12 @@
 package com.novi.backendfinalassignment.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.novi.backendfinalassignment.utils.UserCredentials;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -15,7 +17,7 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserCredentials {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,48 +53,7 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
-    public Long getId() {return id;}
-    public void setId(Long id) {this.id = id;}
-    public UserRole getUserRole() {return userRole;}
-    public void setUserRole(UserRole userRole) {this.userRole = userRole;}
-    public String getUsername() {return username;}
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public String getFirstname() {return firstname;}
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-    public String getLastname() {
-        return lastname;
-    }
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-    public LocalDate getDob() {
-        return dob;
-    }
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public boolean isEnabled() {
-        return enabled;
-    }
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
+
     public String getApikey() {
         return apikey;
     }
@@ -107,12 +68,17 @@ public class User {
     public void removeAuthority(Authority authority) {
         this.authorities.remove(authority);
     }
-
-    public Customer getCustomer() {
-        return customer;
+    @Override
+    public boolean isPasswordValid(String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.matches(password, this.password);
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    @Override
+    public void changePassword(String newPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(newPassword);
+        this.password = hashedPassword;
     }
+
 }

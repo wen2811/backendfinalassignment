@@ -38,23 +38,6 @@ public class BookingController {
         return ResponseEntity.ok().body(bookingService.getBooking(id));
     }
 
-    //Create
-   /* @PostMapping
-    public ResponseEntity<Object> addBooking(@Valid @RequestBody BookingDto bookingDto, BindingResult br) {
-        if(br.hasFieldErrors()) {
-            StringBuilder sb = new StringBuilder();
-            for (FieldError fe : br.getFieldErrors()) {
-                sb.append(fe.getField() + ": ");
-                sb.append(fe.getDefaultMessage());
-                sb.append("\n");
-            }
-            return ResponseEntity.badRequest().body(sb.toString());
-        } else {
-            BookingDto addedBooking = bookingService.addBooking(bookingDto);
-            URI uri = URI.create(String.valueOf(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + addedBooking.id)));
-            return ResponseEntity.created(uri).body(addedBooking);
-        }
-    }*/
 
     @PostMapping("/")
     public ResponseEntity<Object> createBooking(@RequestParam Long customerId, @RequestParam List<Long> bookingTreatmentIds) {

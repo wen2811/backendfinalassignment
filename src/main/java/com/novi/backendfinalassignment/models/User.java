@@ -34,6 +34,10 @@ public class User {
     @Column
     private String apikey;
 
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Booking> bookingList;
@@ -104,4 +108,11 @@ public class User {
         this.authorities.remove(authority);
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 }

@@ -61,15 +61,20 @@ public class SpringSecurityConfig {
 //                .requestMatchers("/**").permitAll()
 
                 //User
-                .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                .requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/users").permitAll()
+                .requestMatchers(HttpMethod.GET,"/{username}").hasAnyRole("ADMIN","EMPLOYEE")
                 .requestMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/{username}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/{username}").hasAnyRole("ADMIN","EMPLOYEE")
+                .requestMatchers(HttpMethod.GET, "/{username}/authorities").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/{username}/authorities").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "{username}/authorities/{authority}").hasRole("ADMIN")
+
 
                 //Bookings
                 .requestMatchers(HttpMethod.GET, "/bookings").hasAnyRole("ADMIN","EMPLOYEE")
                 .requestMatchers(HttpMethod.GET, "/bookings/{id}").hasAnyRole("ADMIN","EMPLOYEE")
-                .requestMatchers(HttpMethod.POST, "//bookings/").permitAll()
+                .requestMatchers(HttpMethod.POST, "/bookings/").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/bookings/{id}").hasAnyRole("hasRole('ADMIN') or hasRole('EMPLOYEE') or (principal.username == #booking.customer.username)")
                 .requestMatchers(HttpMethod.PUT, "/bookings/updateTreatments/{id}").hasAnyRole("hasRole('ADMIN') or hasRole('EMPLOYEE') or (principal.username == #booking.customer.username)")
                 .requestMatchers(HttpMethod.DELETE, "/bookings/{id}").hasAnyRole("ADMIN","EMPLOYEE")
@@ -84,7 +89,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/bookingtreatments/{id}").hasAnyRole("ADMIN", "EMPLOYEE")
 
                 //Calendars
-                .requestMatchers(HttpMethod.GET, "/calendars").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.GET, "/calendars").permitAll()
                 .requestMatchers(HttpMethod.GET, "/calendars/{id}").hasAnyRole("ADMIN", "EMPLOYEE")
                 .requestMatchers(HttpMethod.POST, "/calendars").hasAnyRole("ADMIN", "EMPLOYEE")
                 .requestMatchers(HttpMethod.PUT, "/calendars/{id}").hasAnyRole("ADMIN", "EMPLOYEE")
@@ -94,17 +99,40 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/customers").hasAnyRole("ADMIN", "EMPLOYEE")
                 .requestMatchers(HttpMethod.GET, "/customers/{id}").hasAnyRole("hasRole('ADMIN') or hasRole('EMPLOYEE') or hasPermission(#id, 'UserCredential')")
                 .requestMatchers(HttpMethod.POST, "/customers").hasAnyRole("ADMIN", "EMPLOYEE")
-                .requestMatchers(HttpMethod.PUT, "/customers/{id}").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.PUT, "/customers/{id}").hasAnyRole("hasRole('ADMIN') or hasRole('EMPLOYEE') or hasPermission(#id, 'UserCredential')")
                 .requestMatchers(HttpMethod.DELETE, "/customers/{id}").hasAnyRole("ADMIN", "EMPLOYEE")
                 .requestMatchers(HttpMethod.GET, "/customers/{customerId}/invoices").hasAnyRole("ADMIN", "EMPLOYEE")
 
+                //Files
+                .requestMatchers(HttpMethod.POST, "/upload").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.POST, "/store").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.GET, "/get/{fileId}").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.POST, "/assign/{fileId}/to-customer/{customerId}").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.GET, "/download/{fileId}").hasAnyRole("hasRole('ADMIN') or hasRole('EMPLOYEE') or hasPermission(#id, 'UserCredential')")
+                .requestMatchers(HttpMethod.DELETE, "/{fileId}").hasAnyRole("ADMIN", "EMPLOYEE")
+
+                //Invoices
+                .requestMatchers(HttpMethod.GET, "/invoices").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.GET, "/invoices/{id}").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.POST, "/invoices").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.PUT, "/invoices/{id}").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.DELETE, "/invoices/{id}").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.GET, "/{customerId}/invoices").hasAnyRole("ADMIN", "EMPLOYEE")
+
+                //Treatments
+                .requestMatchers(HttpMethod.GET, "/treatments").permitAll()
+                .requestMatchers(HttpMethod.GET, "/{type}").permitAll()
+                .requestMatchers(HttpMethod.POST, "/treatments").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.PUT, "/treatments/{id}").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.DELETE, "/treatments/{id}").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.PUT, "/{treatments/{id}").hasAnyRole("ADMIN", "EMPLOYEE")
+                .requestMatchers(HttpMethod.GET, "//treatments/{id}/with-calendar").permitAll()
+                .requestMatchers(HttpMethod.POST, "/treatments/{treatmentId}/bookingtreatments").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/treatments/{id}/updateBookingTreatment").hasAnyRole("hasRole('ADMIN') or hasRole('EMPLOYEE') or hasPermission(#id, 'UserCredential')")
+                .requestMatchers(HttpMethod.GET, "/treatments/bookingtreatment/{id}").permitAll()
 
 
-                //.requestMatchers(HttpMethod.DELETE, "/remotecontrollers/**").hasRole("ADMIN")
-               // .requestMatchers(HttpMethod.POST, "/televisions").hasRole("ADMIN")
-               // .requestMatchers(HttpMethod.DELETE, "/televisions/**").hasRole("ADMIN")
-               // .requestMatchers(HttpMethod.POST, "/wallbrackets").hasRole("ADMIN")
-               // .requestMatchers(HttpMethod.DELETE, "/wallbrackets/**").hasRole("ADMIN")
+
                 // Je mag meerdere paths tegelijk definieren
                // .requestMatchers("/cimodules", "/remotecontrollers", "/televisions", "/wallbrackets").hasAnyRole("ADMIN", "USER")
 

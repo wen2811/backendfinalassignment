@@ -2,6 +2,7 @@ package com.novi.backendfinalassignment.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.novi.backendfinalassignment.dtos.CustomerDto;
 import com.novi.backendfinalassignment.utils.UserCredentials;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "customers")
-public abstract class Customer implements UserCredentials {
+public abstract class Customer extends CustomerDto implements UserCredentials {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

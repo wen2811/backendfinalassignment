@@ -31,7 +31,7 @@ public class TreatmentController {
     }
 
     //Read
-    @GetMapping
+    @GetMapping("/treatments")
     public ResponseEntity<List<TreatmentDto>> getAllTreatments() {
         return ResponseEntity.ok().body(treatmentService.getAllTreatments());
     }
@@ -42,7 +42,7 @@ public class TreatmentController {
     }
     
     //Create
-    @PostMapping
+    @PostMapping("/treatments")
     public ResponseEntity<Object> addTreatment(@Valid @RequestBody TreatmentDto treatmentDto, BindingResult br) {
         if(br.hasFieldErrors()) {
             StringBuilder sb = new StringBuilder();

@@ -1,9 +1,10 @@
 package com.novi.backendfinalassignment.controllers;
 
+import com.novi.backendfinalassignment.dtos.CustomerDto;
 import com.novi.backendfinalassignment.dtos.FileDto;
 import com.novi.backendfinalassignment.exceptions.UnauthorizedAccessException;
 import com.novi.backendfinalassignment.models.Customer;
-import com.novi.backendfinalassignment.models.File;
+import com.novi.backendfinalassignment.services.CustomerService;
 import com.novi.backendfinalassignment.services.FileService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -11,35 +12,29 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/api/files")
 public class FileController {
     private final FileService fileService;
+    private final CustomerService customerService;
 
-    public FileController(FileService fileService) {
+    public FileController(FileService fileService, CustomerService customerService) {
         this.fileService = fileService;
+        this.customerService = customerService;
     }
 
     @PostMapping("/upload")
     public ResponseEntity<FileDto> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("customerId") Long customerId) throws IOException {
-        Customer customer = new Customer() {
-            @Override
-            public boolean isPasswordValid(String password) {
-                return false;
-            }
-            @Override
-            public void changePassword(String newPassword) {
-            }
-        };
-        customer.setId(customerId);
-
+        Customer customer = (Customer) customerService.getCustomerById(customerId);
+        if (customer == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
         FileDto uploadedFile = fileService.uploadFile(file, customer);
-
         return ResponseEntity.ok(uploadedFile);
     }
+
 
     @PostMapping("/store")
     public ResponseEntity<FileDto> storeFile(@RequestParam("file") MultipartFile file) throws IOException {

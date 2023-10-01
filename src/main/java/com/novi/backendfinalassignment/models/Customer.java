@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "customers")
-public abstract class Customer extends CustomerDto implements UserCredentials {
+public class Customer extends CustomerDto implements UserCredentials {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,5 +50,15 @@ public abstract class Customer extends CustomerDto implements UserCredentials {
     @Override
     public String getPassword() {
         return null;
+    }
+
+    @Override
+    public boolean isPasswordValid(String password) {
+        return false;
+    }
+
+    @Override
+    public void changePassword(String newPassword) {
+
     }
 }

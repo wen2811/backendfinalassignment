@@ -31,8 +31,8 @@ public class CustomerController {
     }
 
     @GetMapping("/customers/{id}")
-    public ResponseEntity<CustomerDto> getCustomerById(@PathVariable Long id) throws RecordNotFoundException {
-        CustomerDto customerDto = customerService.getCustomerById(id);
+    public ResponseEntity<CustomerDto> getACustomerById(@PathVariable Long id) throws RecordNotFoundException {
+        CustomerDto customerDto = customerService.getACustomerById(id);
         return ResponseEntity.ok().body(customerDto);
     }
     

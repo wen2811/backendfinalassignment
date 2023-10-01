@@ -1,7 +1,6 @@
 package com.novi.backendfinalassignment.services;
 
 import com.novi.backendfinalassignment.dtos.CustomerDto;
-import com.novi.backendfinalassignment.dtos.InvoiceDto;
 import com.novi.backendfinalassignment.exceptions.RecordNotFoundException;
 import com.novi.backendfinalassignment.models.Customer;
 import com.novi.backendfinalassignment.models.Invoice;
@@ -34,7 +33,7 @@ public class CustomerService {
         return customerDto;
     }
 
-    public CustomerDto getCustomerById(Long id) throws RecordNotFoundException {
+    public CustomerDto getACustomerById(Long id) throws RecordNotFoundException {
         Optional<Customer> customerOptional = customerRepository.findById(id);
 
         if(customerOptional.isEmpty()) {
@@ -89,7 +88,17 @@ public class CustomerService {
         return transferCustomerToDto(customer);
     }
 
+    public Customer getCustomerById(Long customerId) {
+        return customerRepository.findById(customerId).orElse(null);
+    }
 
+    public Customer registerCustomer(CustomerDto customerDto) {
+        Customer newCustomer = new Customer();
+        newCustomer.setEmail(customerDto.getEmail());
+        newCustomer.setPassword(customerDto.getPassword());
+
+        return customerRepository.save(newCustomer);
+    }
 
 
     public CustomerDto transferCustomerToDto(Customer customer) {

@@ -75,6 +75,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/bookings").hasAnyRole("ADMIN","EMPLOYEE")
                 .requestMatchers(HttpMethod.GET, "/bookings/{id}").hasAnyRole("ADMIN","EMPLOYEE")
                 .requestMatchers(HttpMethod.POST, "/bookings/").permitAll()
+                .requestMatchers(HttpMethod.POST, "/registerbookings/").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/bookings/{id}").hasAnyRole("hasRole('ADMIN') or hasRole('EMPLOYEE') or (principal.username == #booking.customer.username)")
                 .requestMatchers(HttpMethod.PUT, "/bookings/updateTreatments/{id}").hasAnyRole("hasRole('ADMIN') or hasRole('EMPLOYEE') or (principal.username == #booking.customer.username)")
                 .requestMatchers(HttpMethod.DELETE, "/bookings/{id}").hasAnyRole("ADMIN","EMPLOYEE")

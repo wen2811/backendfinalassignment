@@ -4,7 +4,9 @@ import com.novi.backendfinalassignment.dtos.BookingDto;
 import com.novi.backendfinalassignment.dtos.CustomerDto;
 import com.novi.backendfinalassignment.exceptions.RecordNotFoundException;
 import com.novi.backendfinalassignment.models.Booking;
+import com.novi.backendfinalassignment.models.Customer;
 import com.novi.backendfinalassignment.services.BookingService;
+import com.novi.backendfinalassignment.services.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +17,13 @@ import java.util.List;
 @RequestMapping("/bookings")
 public class BookingController {
     private final BookingService bookingService;
+    private final CustomerService customerService;
 
 
-    public BookingController(BookingService bookingService) {
+    public BookingController(BookingService bookingService, CustomerService customerService) {
         this.bookingService = bookingService;
 
+        this.customerService = customerService;
     }
 
     //Read
@@ -34,14 +38,32 @@ public class BookingController {
     }
 
 
-    @PostMapping("/")
+   /* @PostMapping("/")
     public ResponseEntity<Object> createBooking(@RequestParam Long customerId, @RequestParam List<Long> bookingTreatmentIds, @RequestBody CustomerDto customerDto) {
         Booking booking = bookingService.createBooking(customerId, bookingTreatmentIds, customerDto);
         if (booking == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
+    }*/
+
+    @PostMapping("/registerbookings/")
+    public ResponseEntity<Object> createBooking(@RequestParam Long customerId, @RequestParam List<Long> bookingTreatmentIds, @RequestBody CustomerDto customerDto) {
+        Customer existingCustomer = customerService.getCustomerById(customerId);
+
+        if (existingCustomer == null) {
+
+            existingCustomer = customerService.registerCustomer(customerDto);
+        }
+        Booking booking = bookingService.createBooking(customerId, bookingTreatmentIds, customerDto);
+
+        if (booking == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(booking, HttpStatus.CREATED);
     }
+
 
 
     //Update 1 algemeen
